@@ -1,19 +1,18 @@
-package com.example.mvvmapp.network.model
+package com.example.jetpackcompose.network.model
 
-import com.example.mvvmapp.domain.model.Recipe
-import com.example.mvvmapp.domain.util.DomainMapper
+import com.example.jetpackcompose.domain.model.Recipe
+import com.example.jetpackcompose.domain.util.DomainMapper
 
-class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
+class RecipeDtoMapper: DomainMapper<RecipeDto, Recipe> {
 
     override fun mapToDomainModel(model: RecipeDto): Recipe {
         return Recipe(
             id = model.pk,
-            tittle = model.tittle,
+            title = model.title,
             featuredImage = model.featuredImage,
             rating = model.rating,
             publisher = model.publisher,
             sourceUrl = model.sourceUrl,
-            description = model.description,
             cookingInstructions = model.cookingInstructions,
             ingredients = model.ingredients?: listOf(),
             dateAdded = model.dateAdded,
@@ -21,26 +20,26 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
         )
     }
 
-    override fun mapToEntity(domainModel: Recipe): RecipeDto {
+    override fun mapFromDomainModel(domainModel: Recipe): RecipeDto {
         return RecipeDto(
             pk = domainModel.id,
-            tittle = domainModel.tittle,
+            title = domainModel.title,
             featuredImage = domainModel.featuredImage,
             rating = domainModel.rating,
             publisher = domainModel.publisher,
             sourceUrl = domainModel.sourceUrl,
-            description = domainModel.description,
             cookingInstructions = domainModel.cookingInstructions,
-            ingredients = domainModel.ingredients?: listOf(),
+            ingredients = domainModel.ingredients,
             dateAdded = domainModel.dateAdded,
             dateUpdated = domainModel.dateUpdated
         )
     }
 
-    fun toDomainList(initial: List<RecipeDto>): List<Recipe> {
+    fun toDomainList(initial: List<RecipeDto>): List<Recipe>{
         return initial.map { mapToDomainModel(it) }
     }
-    fun fromDomainList(initial: List<Recipe>): List<RecipeDto> {
-        return initial.map { mapToEntity(it) }
+
+    fun fromDomainList(initial: List<Recipe>): List<RecipeDto>{
+        return initial.map { mapFromDomainModel(it) }
     }
 }

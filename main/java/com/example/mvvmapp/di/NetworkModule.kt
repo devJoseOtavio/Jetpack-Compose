@@ -1,42 +1,41 @@
-package com.example.mvvmapp.di
+package com.example.jetpackcompose.di
 
-import com.example.mvvmapp.network.RecipeService
-import com.example.mvvmapp.network.model.RecipeDto
-import com.example.mvvmapp.network.model.RecipeDtoMapper
+import com.example.jetpackcompose.network.RetrofitService
+import com.example.jetpackcompose.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.internal.managers.ApplicationComponentManager
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponentManager::class)
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeMapper(): RecipeDtoMapper {
+    fun provideRecipeMapper(): RecipeDtoMapper{
         return RecipeDtoMapper()
     }
-
     @Singleton
     @Provides
-    fun provideRecipeService(): RecipeService {
+    fun provideRecipeService(): RetrofitService{
         return Retrofit.Builder()
-            .baseUrl("https://food2fork.ca/api/recipe")
+            .baseUrl("https://food2fork.ca/api/recipe/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
-            .create(RecipeService::class.java)
+            .create(RetrofitService::class.java)
     }
 
     @Singleton
     @Provides
     @Named("auth_token")
-    fun provideAuthToken(): String {
+    fun provideAuthToken() : String{
         return "Token 9c8b06d329136da358c2d00e76946b0111ce2c48"
     }
+
 }

@@ -1,8 +1,12 @@
-package com.example.mvvmapp.domain.model
+package com.example.jetpackcompose.domain.model
 
-data class Recipe(
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Recipe (
     val id: Int? = null,
-    val tittle: String? = null,
+    val title: String? = null,
     val publisher: String? = null,
     val featuredImage: String? = null,
     val rating: Int? = 0,
@@ -12,4 +16,6 @@ data class Recipe(
     val ingredients: List<String> = listOf(),
     val dateAdded: String? = null,
     val dateUpdated: String? = null,
-)
+    ) : Parcelable
+{
+}

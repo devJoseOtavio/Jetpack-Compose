@@ -1,23 +1,23 @@
-package com.example.mvvmapp.network.model
+package com.example.jetpackcompose.network.model
 
 import com.google.gson.annotations.SerializedName
 
-class RecipeDto (
+data class RecipeDto(
 
     @SerializedName("pk")
     var pk: Int? = null,
 
-    @SerializedName("tittle")
-    var tittle: String? = null,
-
-    @SerializedName("featured_image")
-    var featuredImage: String? = null,
+    @SerializedName("title")
+    var title: String? = null,
 
     @SerializedName("publisher")
     var publisher: String? = null,
 
+    @SerializedName("featured_image")
+    var featuredImage: String? = null,
+
     @SerializedName("rating")
-    var rating: Int? = null,
+    var rating: Int? = 0,
 
     @SerializedName("source_url")
     var sourceUrl: String? = null,
@@ -25,7 +25,7 @@ class RecipeDto (
     @SerializedName("description")
     var description: String? = null,
 
-    @SerializedName("cookingInstructions")
+    @SerializedName("cooking_instructions")
     var cookingInstructions: String? = null,
 
     @SerializedName("ingredients")
@@ -36,4 +36,5 @@ class RecipeDto (
 
     @SerializedName("date_updated")
     var dateUpdated: String? = null,
-)
+){
+}

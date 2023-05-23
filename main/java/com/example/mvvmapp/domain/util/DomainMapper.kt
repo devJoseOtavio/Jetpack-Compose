@@ -1,8 +1,8 @@
-package com.example.mvvmapp.domain.util
+package com.example.jetpackcompose.domain.util
 
 interface DomainMapper <T, DomainModel> {
 
-    fun mapToDomainModel(entity: T): DomainModel
+    fun mapToDomainModel(model: T): DomainModel
 
-    fun mapToEntity(domainModel: DomainModel): T
+    fun mapFromDomainModel(domainModel: DomainModel): T
 }
