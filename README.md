@@ -5,5 +5,7 @@
   <li>A arquitetura utilizada a MVVM.</li>
 </ul>
 
+![image](https://github.com/devJoseOtavio/Jetpack-Compose/assets/101358660/c96cb759-1cc6-4470-a1f5-347aec7fd983)
+
 ![image](https://github.com/devJoseOtavio/Jetpack-Compose/assets/101358660/362d87ba-0bd8-4045-af20-a21142b2960e)
 
