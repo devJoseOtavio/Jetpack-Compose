@@ -10,6 +10,7 @@ import com.example.jetpackcompose.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -38,25 +39,41 @@ constructor(
     private var recipeListScrollPosition = 0
 
     init {
-        newSearch(query.value)
+        onTriggerEvent(RecipeListEvent.NewSearchEvent)
     }
 
-    fun newSearch(query: String){
+    fun onTriggerEvent(event: RecipeListEvent) {
         viewModelScope.launch {
+            try {
+                when(event) {
+                    is RecipeListEvent.NewSearchEvent -> {
+                        newSearch()
+                    }
+                    is RecipeListEvent.NextPageEvent -> {
+                        nextPage()
+                    }
 
-            loading.value = true
-
-            delay(4000)
-
-            val result = repository.search(
-                token = token,
-                page = 1,
-                query = query
-            )
-            recipes.value = result
-
-            loading.value = false
+                    else -> {}
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "onTriggerEvent: Exception: ${e}, ${e.cause}")
+            }
         }
+    }
+
+    private suspend fun newSearch(){
+        loading.value = true
+
+        delay(4000)
+
+        val result = repository.search(
+            token = token,
+            page = 1,
+            query = query.value
+        )
+        recipes.value = result
+
+        loading.value = false
     }
 
     fun onQueryChanged(query: String){
@@ -69,20 +86,20 @@ constructor(
         onQueryChanged(category)
     }
 
-    fun nextPage() {
-        viewModelScope.launch {
-            if ((recipeListScrollPosition + 1 ) >= (page.value * PAGE_SIZE)) {
-                loading.value = true
-                incrementPage()
+    private suspend fun nextPage() {
+        if ((recipeListScrollPosition + 1 ) >= (page.value * PAGE_SIZE)) {
+            loading.value = true
+            incrementPage()
 
-                if (page.value > 1) {
-                    val result = repository.search(
-                        token = token,
-                        page = page.value,
-                        query = query.value
-                    )
-                    Log.d(TAG, "nextPage: $(Result)")
-                }
+            if (page.value > 1) {
+                val result = repository.search(
+                    token = token,
+                    page = page.value,
+                    query = query.value
+                )
+                recipes.value = result
+
+                loading.value = false
             }
         }
     }

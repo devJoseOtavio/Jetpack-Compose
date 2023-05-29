@@ -35,7 +35,6 @@ fun SearchAppBar(
     onSelectedCategoryChanged: (String) -> Unit,
     onToggleTheme: () -> Unit,
 ){
-
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Surface(
@@ -118,7 +117,6 @@ fun SearchAppBar(
                         },
                         onExecuteSearch = { onExecuteSearch() },
                     )
-
                 }
             }
         }

@@ -52,6 +52,7 @@ import com.example.jetpackcompose.presentation.components.FoodCategoryChip
 import com.example.jetpackcompose.presentation.components.RecipeCard
 import com.example.jetpackcompose.presentation.components.RecipeList
 import com.example.jetpackcompose.presentation.components.SearchAppBar
+import com.example.jetpackcompose.presentation.components.util.ShimmerCard
 import com.example.jetpackcompose.presentation.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -80,49 +81,51 @@ class RecipeListFragment: Fragment() {
 
                     val query = viewModel.query.value
 
-                    val softKeyboard = LocalSoftwareKeyboardController.current
-
                     var selectedCategory = viewModel.selectCategory.value
 
                     val loading = viewModel.loading.value
 
                     val page = viewModel.page.value
 
-                    Column {
-                        SearchAppBar(
-                            query = query,
-                            onQueryChanged = viewModel::onQueryChanged,
-                            onExecuteSearch = { viewModel::newSearch },
-                            categories = getAllFoodCategories(),
-                            selectedCategory = selectedCategory,
-                            onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                            onToggleTheme = { application.toggleTheme() }
-                        )
-
-                        if (loading && recipes.isEmpty()) {
-//                            LoadingRecipeListShimmer() = 250.dp
-                        } else {
-                            LazyColumn(
-                                modifier = Modifier.weight(9f)
+                    Scaffold(
+                        topBar = {
+                            SearchAppBar(
+                                query = query,
+                                onQueryChanged = viewModel::onQueryChanged,
+                                onExecuteSearch = { viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent) },
+                                categories = getAllFoodCategories(),
+                                selectedCategory = selectedCategory,
+                                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                                onToggleTheme = { application.toggleTheme() }
                             )
-                            {
-                                itemsIndexed(
-                                    items = recipes
-                                ) { index, recipe ->
-                                    viewModel.onChangeCategoryScrollPosition(index)
-                                    if((index + 1 ) >= (page * PAGE_SIZE) && !loading) {
-                                        viewModel.nextPage()
-                                    }
-                                    RecipeCard(recipe = recipe, onClick = {})
-                                }
-                            }
                         }
+                    ) {
+                        RecipeList(
+                            loading = loading,
+                            recipes = recipes,
+                            page = page,
+                            onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition ,
+                            nextPageEvent = { viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)},
+                            navController = findNavController(),
+                        )
                     }
                 }
             }
         }
     }
 }
+
+//@Composable
+//fun openRecipe() {
+//    RecipeList(
+//        loading = loading,
+//        recipes = recipes,
+//        page = page,
+//        onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition ,
+//        nextPageEvent = { viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)},
+//        navController = findNavController(),
+//    )
+//}
 
 //@Composable
 //fun SnackbarDemo(

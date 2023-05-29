@@ -56,7 +56,7 @@ constructor(
         val recipe = recipeRepository.get(token = token, id = id)
         this.recipe.value = recipe
 
-        savedStateHandle[STATE_KEY_RECIPE] = recipe.id
+        savedStateHandle.set(STATE_KEY_RECIPE, recipe.id)
         loading.value = false
     }
 }

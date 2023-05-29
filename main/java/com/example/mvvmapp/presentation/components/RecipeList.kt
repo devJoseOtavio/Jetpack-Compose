@@ -62,5 +62,4 @@ fun RecipeList(
             verticalBias = 0.3f
         )
     }
-
 }
